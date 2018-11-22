@@ -41,11 +41,7 @@ int main()
    from source vertex */
 void dijkstra(int graph[MAX][MAX], int s,int V)
 {
-  std::vector<int> costs;
-  costs.resize(ulong(V), INT_MAX);
-  for (int i = 0 ; i < V ; ++i) {
-    costs[i] = INT_MAX;
-  }
+  std::vector<int> costs(V, INT_MAX);
 
   costs[s] = 0;
 
@@ -65,7 +61,7 @@ void dijkstra(int graph[MAX][MAX], int s,int V)
     for (int n = 0 ; n < V ; ++n) {
       int cost = graph[u][n]; //weight of edge u-n
       int new_cost = min + cost;
-      if (new_cost < costs[n])
+      if (new_cost < costs[n] && cost != 0)
         {
           costs[n] = new_cost;
         }
