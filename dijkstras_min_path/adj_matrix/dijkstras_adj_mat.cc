@@ -44,35 +44,29 @@ typedef std::pair<int, int> Node;
 void dijkstra(int graph[MAX][MAX], int s,int V)
 {
   std::vector<int> costs(V, INT_MAX);
-
-  //costs[s] = 0;
+  costs[s] = 0;
 
   std::priority_queue<Node, std::vector<Node>, std::greater<Node>> todo;
-  todo.push(Node(s, 0));
+  todo.push(Node(0, s));
 
   while (!todo.empty()) {
     Node node = todo.top();
     todo.pop();
-    int u = node.first;
-    int min = node.second;
-    costs[u] = min;
+    int min = node.first;
+    int u = node.second;
 
-    for (int n = 0 ; n < V ; ++n) {
-      int local_cost = graph[u][n]; //weight of edge u-v, 0 if no edge
+    for (int v = 0 ; v < V ; ++v) {
+      int local_cost = graph[u][v]; //weight of edge u-v, 0 if no edge
       bool has_edge = local_cost != 0;
-      int old_cost = costs[n];
+      int old_cost = costs[v];
       int new_cost = min + local_cost;
       if (new_cost < old_cost && has_edge)
         {
-          costs[n] = new_cost;
-          todo.push(Node(n, new_cost));
+          costs[v] = new_cost;
+          todo.push(Node(new_cost, v));
         }
     }
-
-
-  } // end while
-
-
+  }
 
   for (int i = 0; i < V ; ++i) {
     std::cout << costs[i] << " ";
