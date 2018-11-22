@@ -33,8 +33,10 @@ int main()
   you need to write your solution in the form of Function(s) only.
   Driver Code to call/invoke your function is mentioned above.*/
 
-#include <map>
 #include <climits>
+#include <queue>
+
+typedef std::pair<int, int> Node;
 
 /* The function prints V space separated integers where
    the ith integer denote the shortest distance of ith vertex
@@ -43,29 +45,30 @@ void dijkstra(int graph[MAX][MAX], int s,int V)
 {
   std::vector<int> costs(V, INT_MAX);
 
-  costs[s] = 0;
+  //costs[s] = 0;
 
-  std::set<int> done;
+  std::priority_queue<Node, std::vector<Node>, std::greater<Node>> todo;
+  todo.push(Node(s, 0));
 
-  while (done.size() < ulong(V)) {
-    int min = INT_MAX;
-    int u = -1;
-    for (int n = 0 ; n < V ; ++n) {
-      if ( (done.find(n) == done.end()) && costs[n] <= min) {
-        u = n;
-        min = costs[n];
-      }
-    }
-    auto _nada = done.insert(u);
+  while (!todo.empty()) {
+    Node node = todo.top();
+    todo.pop();
+    int u = node.first;
+    int min = node.second;
+    costs[u] = min;
 
     for (int n = 0 ; n < V ; ++n) {
-      int cost = graph[u][n]; //weight of edge u-n
-      int new_cost = min + cost;
-      if (new_cost < costs[n] && cost != 0)
+      int local_cost = graph[u][n]; //weight of edge u-v, 0 if no edge
+      bool has_edge = local_cost != 0;
+      int old_cost = costs[n];
+      int new_cost = min + local_cost;
+      if (new_cost < old_cost && has_edge)
         {
           costs[n] = new_cost;
+          todo.push(Node(n, new_cost));
         }
     }
+
 
   } // end while
 
