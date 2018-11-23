@@ -43,6 +43,7 @@ typedef std::pair<int, int> Node;
    from source vertex */
 void dijkstra(int graph[MAX][MAX], int s,int V)
 {
+  std::vector<bool> done(V, false);
   std::vector<int> costs(V, INT_MAX);
   costs[s] = 0;
 
@@ -54,8 +55,10 @@ void dijkstra(int graph[MAX][MAX], int s,int V)
     todo.pop();
     int min = node.first;
     int u = node.second;
+    done[u] = true;
 
     for (int v = 0 ; v < V ; ++v) {
+      if (done[v]) { continue; }
       int local_cost = graph[u][v]; //weight of edge u-v, 0 if no edge
       bool has_edge = local_cost != 0;
       int old_cost = costs[v];
