@@ -62,33 +62,43 @@ int main()
   you need to write your solution in the form of Function(s) only.
   Driver Code to call/invoke your function is mentioned above.*/
 
-#include <queue>
 
-typedef std::pair<int, int> Node; // pair<num_incoming_edges, node_id>
-typedef std::priority_queue<int, std::vector<Node>, std::greater<Node>> minheap;
+#include <stack>
 
 /* You need to complete this function */
 int * topoSort(vector<int> graph[], int N)
 {
   int *res = new int[N];
   std::vector<int> nodes(N, 0);
-  minheap order;
+  std::stack<int> todo;
 
   for (size_t v = 0 ; v < size_t(N) ; ++v) {
     auto vertex = graph[v];
-    for (size_t n = 0 ; n < vertex.size() ; ++n) {
-      nodes[vertex[n]] += 1;
+    for (auto n : vertex) {
+      nodes[n] += 1;
     }
   }
 
+  // the ith node in nodes contains number of node i's incoming edges.
   for (int i = 0 ; i < N ; ++i) {
-    Node node(nodes[i], i);
-    order.push(node);
+    if (nodes[i] == 0) {
+      todo.push(i);
+    }
   }
 
-  for (int i = 0 ; i < N ; ++i) {
-    res[i] = order.top().second;
-    order.pop();
+  int count = 0;
+  while (!todo.empty()) {
+    int cur = todo.top();
+    todo.pop();
+    res[count] = cur;
+    count++;
+
+    for (auto n : graph[cur]) {
+      nodes[n] -= 1;
+      if (nodes[n] == 0) {
+        todo.push(n);
+      }
+    }
   }
 
   return res;
