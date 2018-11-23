@@ -18,8 +18,18 @@ int main()
           cin>>u>>v;
           graph[u].push_back(v);
         }
+      std::cout << "Traversing graph:" << std::endl;
+      for (int i = 0 ; i < N ; ++i) {
+        auto v = graph[i];
+        std::cout << i << ": ";
+        for (auto n : v) {
+          std::cout << n << " ";
+        }
+        std::cout << std::endl;
+      }
       int *res = topoSort(graph,N);
       bool valid =true;
+      std::cout << "res: ";
       for(int i=0;i<N;i++)
         {
           std::cout << res[i] << " ";
@@ -40,9 +50,9 @@ int main()
         }
       std::cout << std::endl;
       if(valid==false)
-        cout<< "wrong" <<endl;
+        cout<< "wrong" <<endl << endl;
       else
-        cout<< "right" <<endl;
+        cout<< "right" <<endl << endl;
     }
 }
 
