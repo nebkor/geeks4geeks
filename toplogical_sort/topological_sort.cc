@@ -63,14 +63,14 @@ int main()
   Driver Code to call/invoke your function is mentioned above.*/
 
 
-#include <stack>
+#include <queue>
 
 /* You need to complete this function */
 int * topoSort(vector<int> graph[], int N)
 {
   int *res = new int[N];
   std::vector<int> nodes(N, 0);
-  std::stack<int> todo;
+  std::queue<int> todo;
 
   for (size_t v = 0 ; v < size_t(N) ; ++v) {
     auto vertex = graph[v];
@@ -88,14 +88,13 @@ int * topoSort(vector<int> graph[], int N)
 
   int count = 0;
   while (!todo.empty()) {
-    int cur = todo.top();
+    int cur = todo.front();
     todo.pop();
     res[count] = cur;
     count++;
 
     for (auto n : graph[cur]) {
-      nodes[n] -= 1;
-      if (nodes[n] == 0) {
+      if (--nodes[n] == 0) {
         todo.push(n);
       }
     }
